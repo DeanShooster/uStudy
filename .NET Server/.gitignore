@@ -1,0 +1,8 @@
+bin/
+obj/
+.vs/
+*.user
+*.suo
+
+# Local secrets. Copy appsettings.example.json to appsettings.json.
+appsettings.json

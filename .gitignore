@@ -1,0 +1,41 @@
+# Dependencies
+node_modules/
+
+# Builds
+dist/
+dist-ssr/
+bin/
+obj/
+
+# Secrets
+.env
+.env.*
+!.env.example
+**/appsettings.json
+!**/appsettings.example.json
+
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Editors
+.vs/
+.vscode/*
+!.vscode/extensions.json
+.idea/
+*.suo
+*.user
+*.ntvs*
+*.njsproj
+*.sw?
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Local overrides
+*.local

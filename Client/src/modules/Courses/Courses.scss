@@ -1,0 +1,630 @@
+@use '../../style/mixins' as *;
+
+.courses {
+  @include frame;
+  margin: 48px auto 80px;
+
+  h1 {
+    margin-bottom: 28px;
+    font-size: 40px;
+  }
+
+  .category-grid {
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 16px;
+    margin: 0;
+    padding: 0;
+
+    li {
+      display: flex;
+    }
+
+    a {
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+      overflow: hidden;
+      @include surface(16px);
+      color: var(--ink);
+      font-size: 20px;
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      text-decoration: none;
+      transition: transform 0.18s ease, border-color 0.18s ease, background 0.18s ease;
+      @include focus-ring;
+
+      &:hover {
+        transform: translateY(-4px);
+        border-color: var(--accent);
+        background: color-mix(in srgb, var(--accent) 12%, var(--surface));
+      }
+    }
+
+    img {
+      display: block;
+      width: 100%;
+      aspect-ratio: 16 / 10;
+      object-fit: cover;
+      transition: transform 0.35s ease;
+    }
+
+    a:hover img {
+      transform: scale(1.05);
+    }
+
+    span {
+      padding: 16px 18px 18px;
+      text-align: center;
+    }
+  }
+}
+
+.course-prompt {
+  margin: 0 0 16px;
+  color: var(--muted);
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.courses h1:has(+ .course-prompt) {
+  margin-bottom: 8px;
+}
+
+.course-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.course {
+  position: relative;
+  background:
+    linear-gradient(180deg, color-mix(in srgb, white 8%, transparent), transparent 52px),
+    var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  overflow: hidden;
+  transition: border-color 0.2s ease, box-shadow 0.25s ease;
+
+  &::before,
+  &::after {
+    content: '';
+    position: absolute;
+    pointer-events: none;
+  }
+
+  &::before {
+    z-index: 1;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    width: 3px;
+    background: linear-gradient(180deg, var(--accent-hover), var(--accent) 40%, transparent);
+    opacity: 0;
+    transition: opacity 0.25s ease;
+  }
+
+  &::after {
+    inset: 0;
+    border-radius: inherit;
+    padding: 1px;
+    background: linear-gradient(
+      140deg,
+      color-mix(in srgb, var(--accent) 80%, white),
+      transparent 46%,
+      color-mix(in srgb, var(--accent-hover) 45%, transparent)
+    );
+    mask:
+      linear-gradient(#000 0 0) content-box,
+      linear-gradient(#000 0 0);
+    mask-composite: exclude;
+    opacity: 0;
+    transition: opacity 0.25s ease;
+  }
+
+  h2 {
+    margin: 0;
+  }
+
+  &:hover {
+    border-color: color-mix(in srgb, var(--accent) 40%, var(--line));
+    box-shadow: 0 14px 32px color-mix(in srgb, black 28%, transparent);
+
+    &::after {
+      opacity: 0.45;
+    }
+  }
+
+  &.is-open {
+    border-color: color-mix(in srgb, var(--accent) 55%, var(--line));
+    box-shadow: 0 18px 42px color-mix(in srgb, var(--accent) 18%, transparent);
+
+    &::before,
+    &::after {
+      opacity: 1;
+    }
+  }
+
+  &.is-complete,
+  &.is-complete:hover,
+  &.is-complete.is-open {
+    border-color: var(--ok);
+    box-shadow: 0 14px 32px color-mix(in srgb, var(--ok) 16%, transparent);
+
+    &::before {
+      opacity: 1;
+      background: linear-gradient(180deg, var(--ok), color-mix(in srgb, var(--ok) 35%, transparent));
+    }
+
+    &::after {
+      opacity: 1;
+      background: linear-gradient(
+        140deg,
+        var(--ok),
+        color-mix(in srgb, var(--ok) 28%, transparent) 50%,
+        transparent
+      );
+    }
+  }
+}
+
+.course-toggle {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  width: 100%;
+  padding: 18px 20px;
+  border: 0;
+  background: transparent;
+  color: var(--ink);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  transition: background 0.2s ease;
+
+  &:hover {
+    background: color-mix(in srgb, var(--accent) 8%, transparent);
+  }
+
+  @include focus-ring(-3px);
+}
+
+.course.is-open .course-toggle {
+  background: linear-gradient(
+    90deg,
+    color-mix(in srgb, var(--accent) 14%, transparent),
+    transparent 58%
+  );
+  box-shadow: inset 0 -1px 0 color-mix(in srgb, var(--accent) 28%, var(--line));
+}
+
+.course-heading {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+  min-width: 0;
+}
+
+.course-name {
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+
+.course-done {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transform: translate(-50%, -50%);
+  padding: 6px 14px 6px 8px;
+  border: 1px solid color-mix(in srgb, var(--ok) 72%, #fff);
+  border-radius: 999px;
+  background:
+    linear-gradient(180deg, color-mix(in srgb, var(--ok-bright) 28%, transparent), color-mix(in srgb, var(--ok) 14%, var(--surface)));
+  box-shadow:
+    inset 0 1px 0 color-mix(in srgb, #fff 35%, transparent),
+    0 0 0 4px color-mix(in srgb, var(--ok) 12%, transparent),
+    0 8px 18px color-mix(in srgb, var(--ok) 28%, transparent);
+  color: var(--ok-soft);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  line-height: 1;
+  text-transform: uppercase;
+  pointer-events: none;
+  white-space: nowrap;
+
+  .complete-mark {
+    position: static;
+    width: 20px;
+    height: 20px;
+    background: var(--ok);
+    color: var(--ok-ink);
+    box-shadow: 0 0 0 2px color-mix(in srgb, var(--ok) 35%, transparent);
+  }
+}
+
+.course-lessons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 14px;
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.topic-active {
+  color: var(--warn);
+}
+
+.topic-completed {
+  color: var(--ok);
+}
+
+.course-meta {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex: none;
+}
+
+.course-count {
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.course-chevron {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--accent-soft);
+  color: var(--accent);
+  transition: transform 0.28s ease, background 0.2s ease, color 0.2s ease;
+
+  svg {
+    width: 20px;
+    height: 20px;
+  }
+
+  .tree-arrow-right {
+    width: auto;
+    height: auto;
+  }
+}
+
+.course.is-open .course-chevron {
+  transform: rotate(90deg);
+  background: var(--accent);
+  color: var(--accent-ink);
+}
+
+.course-panel {
+  @include collapse-panel;
+}
+
+.course.is-open .course-panel {
+  @include collapse-open;
+}
+
+.course-panel-inner {
+  @include collapse-inner;
+}
+
+.course .subjects {
+  margin-top: 0;
+  padding: 20px 22px 22px;
+  @include reveal;
+}
+
+.course.is-open .subjects {
+  @include revealed;
+}
+
+.subjects {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  list-style: none;
+  margin: 20px 0 0;
+  padding: 0;
+
+  > li {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+  }
+}
+
+button.subject {
+  display: block;
+  width: 100%;
+  padding: 40px 36px 16px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: var(--bg);
+  color: inherit;
+  text-align: center;
+  cursor: pointer;
+
+  h3 {
+    font-size: 18px;
+  }
+
+  p {
+    margin-top: 6px;
+    font-size: 14px;
+  }
+
+  &:hover,
+  &.is-open {
+    border-color: var(--accent);
+  }
+
+  @include status-border;
+  @include focus-ring;
+}
+
+.subject-card {
+  position: relative;
+  width: min(560px, 100%);
+}
+
+.subject-label {
+  position: absolute;
+  top: 10px;
+  left: 12px;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--accent);
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.subject-label-complete {
+  color: var(--ok);
+}
+
+.subject-label .complete-mark {
+  position: static;
+  width: 18px;
+  height: 18px;
+}
+
+.complete-mark {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  z-index: 2;
+  display: grid;
+  place-items: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--ok) 18%, var(--bg));
+  color: var(--ok);
+}
+
+.topic-card .complete-mark {
+  top: 8px;
+  left: 9px;
+  width: 16px;
+  height: 16px;
+
+  svg {
+    width: 10px;
+    height: 10px;
+  }
+}
+
+.action-menu {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  z-index: 2;
+}
+
+.action-menu-button {
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  color: var(--muted);
+  @include bare-button;
+
+  &:hover,
+  &[aria-expanded='true'] {
+    background: color-mix(in srgb, var(--accent) 16%, transparent);
+    color: var(--ink);
+  }
+
+  @include focus-ring(2px);
+}
+
+.action-menu-list {
+  position: fixed;
+  z-index: 30;
+  min-width: 188px;
+  padding: 6px;
+  @include surface(12px);
+  box-shadow: var(--shadow);
+
+  button {
+    display: block;
+    width: 100%;
+    padding: 8px 10px;
+    border-radius: 8px;
+    color: var(--ink);
+    font: inherit;
+    font-size: 14px;
+    font-weight: 600;
+    text-align: left;
+    @include bare-button;
+
+    &:hover {
+      background: color-mix(in srgb, var(--accent) 12%, transparent);
+    }
+
+    @include focus-ring(-2px);
+  }
+}
+
+.tree-arrow {
+  display: grid;
+  place-items: center;
+  color: var(--accent);
+}
+
+.tree-arrow-down {
+  height: 48px;
+
+  svg {
+    transform: rotate(90deg);
+  }
+}
+
+.topic-panel {
+  @include collapse-panel;
+  width: 100%;
+}
+
+.topic-panel.is-open {
+  @include collapse-open;
+}
+
+.topic-panel-inner {
+  @include collapse-inner;
+}
+
+.topic-tree {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  @include reveal;
+}
+
+.topic-panel.is-open .topic-tree {
+  @include revealed;
+}
+
+.topics {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  list-style: none;
+  margin: 0;
+  padding: 0 0 4px;
+  overflow-x: auto;
+
+  > li {
+    display: contents;
+  }
+
+  .tree-arrow-right {
+    width: 44px;
+    height: 36px;
+    flex: none;
+  }
+
+  .topic-card {
+    position: relative;
+    display: flex;
+    flex: 1 0 148px;
+    min-width: 0;
+  }
+
+  button.topic {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    flex: 1;
+    width: 100%;
+    min-height: 72px;
+    padding: 26px 14px 12px;
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    background: var(--bg);
+    color: var(--ink);
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 1.35;
+    text-align: center;
+    cursor: pointer;
+
+    &:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    @include status-border;
+    @include focus-ring;
+  }
+}
+
+@keyframes next-clue {
+  0%,
+  100% {
+    box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--accent) 20%, transparent);
+  }
+
+  50% {
+    box-shadow: inset 0 0 0 2px var(--accent);
+  }
+}
+
+button.subject.is-next,
+.topics button.topic.is-next {
+  animation: next-clue 1.6s ease-in-out infinite;
+}
+
+.courses-status {
+  color: var(--muted);
+  font-weight: 600;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .courses a,
+  .courses img,
+  .course,
+  .course::before,
+  .course::after,
+  .course-toggle,
+  .course-chevron,
+  .course-panel,
+  .course .subjects,
+  .topic-panel,
+  .topic-tree {
+    transition: none;
+  }
+
+  .courses a:hover,
+  .courses a:hover img {
+    transform: none;
+  }
+
+  button.subject.is-next,
+  .topics button.topic.is-next {
+    animation: none;
+    box-shadow: inset 0 0 0 2px color-mix(in srgb, var(--accent) 70%, transparent);
+  }
+}

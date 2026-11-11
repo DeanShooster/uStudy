@@ -1,0 +1,156 @@
+@use 'mixins' as *;
+
+.home {
+  position: relative;
+  isolation: isolate;
+  min-height: 100svh;
+  background:
+    radial-gradient(820px 380px at 100% -8%, var(--accent-soft), transparent 62%),
+    var(--bg);
+
+  &::before {
+    content: '';
+    position: fixed;
+    z-index: -1;
+    inset: 0;
+    pointer-events: none;
+    background-image:
+      repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 18px,
+        var(--cage) 18px,
+        var(--cage) 19px
+      ),
+      repeating-linear-gradient(
+        90deg,
+        transparent,
+        transparent 18px,
+        var(--cage) 18px,
+        var(--cage) 19px
+      );
+    mask-image: radial-gradient(ellipse at 50% 30%, #000 25%, transparent 82%);
+  }
+}
+
+.nav {
+  @include frame;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 16px 0;
+}
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--ink);
+  text-decoration: none;
+  font-weight: 700;
+  letter-spacing: -0.04em;
+  font-size: 18px;
+  @include focus-ring;
+}
+
+.mark {
+  width: 34px;
+  height: 34px;
+  flex: none;
+
+  rect {
+    fill: var(--accent);
+  }
+
+  path {
+    fill: var(--accent-ink);
+  }
+
+  circle {
+    fill: var(--live);
+  }
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  gap: 8px 22px;
+
+  a,
+  .nav-item {
+    color: var(--ink);
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 15px;
+  }
+
+  a {
+    @include focus-ring;
+  }
+
+  a:hover,
+  .nav-item:hover {
+    color: var(--accent);
+  }
+}
+
+.nav-item {
+  @include bare-button;
+  padding: 8px 0;
+  @include focus-ring;
+}
+
+.nav-user {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-left: 4px;
+  padding: 4px 14px 4px 4px;
+  border: 1px solid color-mix(in srgb, var(--accent) 28%, var(--line));
+  border-radius: 999px;
+  background: var(--accent-soft);
+  color: var(--ink);
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+}
+
+.nav-user-mark {
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--accent);
+  color: var(--accent-ink);
+  font-size: 13px;
+  line-height: 1;
+}
+
+.button {
+  border: 1px solid transparent;
+  border-radius: 10px;
+  padding: 11px 16px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background 0.15s ease, border-color 0.15s ease;
+  @include focus-ring;
+}
+
+.button-solid {
+  background: var(--accent);
+  color: var(--accent-ink);
+
+  &:hover {
+    background: var(--accent-hover);
+  }
+}
+
+@media (max-width: 680px) {
+  .nav-links {
+    gap: 8px 14px;
+  }
+}

@@ -1,0 +1,16 @@
+@use '../../style/mixins' as *;
+
+.progress-bar {
+  width: 100%;
+  @include progress-track(4px);
+}
+
+.progress-bar-page {
+  width: min(280px, 100%);
+  margin-top: 16px;
+}
+
+.progress-bar-inline {
+  width: 112px;
+  height: 6px;
+}

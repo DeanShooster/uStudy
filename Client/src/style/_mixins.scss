@@ -1,0 +1,83 @@
+@mixin frame {
+  width: var(--page);
+  margin-inline: auto;
+}
+
+@mixin focus-ring($offset: 3px) {
+  &:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: $offset;
+  }
+}
+
+@mixin surface($radius: 16px) {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: $radius;
+}
+
+@mixin field {
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 11px 12px;
+  background: var(--bg);
+  color: var(--ink);
+}
+
+@mixin bare-button {
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+}
+
+@mixin progress-track($height: 4px) {
+  height: $height;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--accent) 22%, transparent);
+  overflow: hidden;
+
+  > span {
+    display: block;
+    height: 100%;
+    border-radius: inherit;
+  }
+}
+
+@mixin collapse-panel {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.35s ease;
+}
+
+@mixin collapse-open {
+  grid-template-rows: 1fr;
+}
+
+@mixin collapse-inner {
+  overflow: hidden;
+}
+
+@mixin reveal {
+  opacity: 0;
+  transform: translateY(-6px);
+  transition: opacity 0.28s ease, transform 0.28s ease;
+}
+
+@mixin revealed {
+  opacity: 1;
+  transform: none;
+}
+
+@mixin status-border {
+  &.is-ongoing,
+  &.is-ongoing:hover,
+  &.is-ongoing.is-open {
+    border-color: var(--warn);
+  }
+
+  &.is-complete,
+  &.is-complete:hover,
+  &.is-complete.is-open {
+    border-color: var(--ok);
+  }
+}
