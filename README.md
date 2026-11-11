@@ -4,6 +4,8 @@ uStudy is a one-on-one AI tutor. Pick a topic, then learn by voice or text while
 
 The model is part of the lesson. Each turn it teaches one idea, reads the board, and moves the session forward.
 
+[![uStudy showcase](https://img.youtube.com/vi/69RvhCVrxF8/maxresdefault.jpg)](https://youtu.be/69RvhCVrxF8)
+
 This repo has three projects. Run the client with either server. Both servers listen on port 4000, so start only one of them.
 
 | Project | Folder | Stack |
